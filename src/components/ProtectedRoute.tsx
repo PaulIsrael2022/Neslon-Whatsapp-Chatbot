@@ -7,19 +7,21 @@ interface ProtectedRouteProps {
   allowedRoles?: string[];
 }
 
-export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { isAuthenticated, user, loading } = useAuth();
+export default function ProtectedRoute({ children, allowedRoles = [] }: ProtectedRouteProps) {
+  const { user } = useAuth();
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+  // If allowedRoles is empty, allow access to authenticated users
+  if (allowedRoles.length === 0) {
+    return <>{children}</>;
   }
 
-  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" />;
+  // Check if user has required role
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return <>{children}</>;

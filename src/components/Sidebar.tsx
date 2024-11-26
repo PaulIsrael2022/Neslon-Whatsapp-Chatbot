@@ -13,22 +13,30 @@ import {
   Building2,
   Stethoscope
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
-const navigation = [
-  { name: 'Dashboard', icon: Home, path: '/' },
-  { name: 'Orders', icon: Package, path: '/orders' },
-  { name: 'Patients', icon: Users, path: '/patients' },
-  { name: 'Inventory', icon: Pill, path: '/inventory' },
-  { name: 'Deliveries', icon: Truck, path: '/deliveries' },
-  { name: 'Support', icon: MessageSquare, path: '/support' },
-  { name: 'Reports', icon: FileText, path: '/reports' },
-  { name: 'Accounting', icon: DollarSign, path: '/accounting' },
-  { name: 'Pharmacies', icon: Building2, path: '/pharmacies' },
-  { name: 'Clinics', icon: Stethoscope, path: '/clinics' },
-  { name: 'Settings', icon: Settings, path: '/settings' }
-];
+const getSettingsPath = (role: string) => {
+  return role === 'admin' ? '/settings' : '/user-settings';
+};
 
 export default function Sidebar({ isOpen }: { isOpen: boolean }) {
+  const { user } = useAuth();
+  const role = user?.role || '';
+
+  const navigation = [
+    { name: 'Dashboard', icon: Home, path: '/' },
+    { name: 'Orders', icon: Package, path: '/orders' },
+    { name: 'Patients', icon: Users, path: '/patients' },
+    { name: 'Inventory', icon: Pill, path: '/inventory' },
+    { name: 'Deliveries', icon: Truck, path: '/deliveries' },
+    { name: 'Support', icon: MessageSquare, path: '/support' },
+    { name: 'Reports', icon: FileText, path: '/reports' },
+    { name: 'Accounting', icon: DollarSign, path: '/accounting' },
+    { name: 'Pharmacies', icon: Building2, path: '/pharmacies' },
+    { name: 'Clinics', icon: Stethoscope, path: '/clinics' },
+    { name: 'Settings', icon: Settings, path: getSettingsPath(role) }
+  ];
+
   return (
     <div className={`${isOpen ? 'block' : 'hidden'} md:flex md:flex-shrink-0`}>
       <div className="flex flex-col w-64">

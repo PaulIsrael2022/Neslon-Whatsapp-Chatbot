@@ -13,10 +13,12 @@ import SupportPage from './pages/Support';
 import ReportsPage from './pages/Reports';
 import AccountingPage from './pages/Accounting';
 import SettingsPage from './pages/Settings';
+import UserSettings from './pages/UserSettings';
 import ClinicsPage from './pages/Clinics';
 import PharmaciesPage from './pages/Pharmacies';
 import NotFound from './pages/ErrorPages/NotFound';
 import ServerError from './pages/ErrorPages/ServerError';
+import Unauthorized from './pages/ErrorPages/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -42,10 +44,26 @@ function App() {
             <Route path="support" element={<SupportPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="accounting" element={<AccountingPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route
+              path="settings"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <SettingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="user-settings"
+              element={
+                <ProtectedRoute>
+                  <UserSettings />
+                </ProtectedRoute>
+              }
+            />
             <Route path="clinics" element={<ClinicsPage />} />
             <Route path="pharmacies" element={<PharmaciesPage />} />
           </Route>
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/500" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

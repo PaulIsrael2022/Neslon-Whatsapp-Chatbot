@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Menu, Bell, Settings, LogOut } from 'lucide-react';
+import { Menu, Bell, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 import NotificationsDropdown from './Header/NotificationsDropdown';
+import UserMenu from './Header/UserMenu';
 import { toast } from 'react-hot-toast';
 
 // Mock notifications - replace with actual data from your backend
@@ -27,29 +28,16 @@ const mockNotifications = [
 export default function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const { logout } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [notifications, setNotifications] = useState(mockNotifications);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast.success('Successfully logged out');
-      navigate('/login');
-    } catch (error) {
-      toast.error('Error logging out');
-    }
-  };
 
   const handleMarkAsRead = (id: string) => {
     setNotifications(notifications.map(notif => 
       notif.id === id ? { ...notif, read: true } : notif
     ));
-  };
-
-  const handleSettingsClick = () => {
-    navigate('/settings');
   };
 
   return (
@@ -88,20 +76,19 @@ export default function Layout() {
                   />
                 )}
               </div>
-              <button
-                onClick={handleSettingsClick}
-                className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <span className="sr-only">Open settings</span>
-                <Settings className="h-6 w-6" />
-              </button>
-              <button
-                onClick={handleLogout}
-                className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <span className="sr-only">Log out</span>
-                <LogOut className="h-6 w-6" />
-              </button>
+
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <span className="sr-only">User menu</span>
+                  <User className="h-6 w-6" />
+                </button>
+                {showUserMenu && (
+                  <UserMenu onClose={() => setShowUserMenu(false)} />
+                )}
+              </div>
             </div>
           </div>
         </div>
