@@ -1,0 +1,1 @@
+<command>cd src/pages && mkdir -p Patients/components && touch Patients/components/NotificationForm.tsx</command>
