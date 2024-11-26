@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema(
         "pharmacyAdmin",
         "deliveryOfficer",
         "deliveryCoordinator",
-        "doctor"
+        "doctor",
+        "clinic"
       ],
       default: "customer",
     },
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Clinic",
       required: function () {
-        return this.role === "doctor";
+        return this.role === "doctor" || this.role === "clinic";
       },
     },
     linkedMainMember: {

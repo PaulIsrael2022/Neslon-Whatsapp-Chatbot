@@ -41,6 +41,10 @@ export default function LoginPage() {
           Delivery: delivery@hpfund.com / delivery123
           <br />
           Customer: customer@example.com / customer123
+          <br />
+          Clinic Admin: clinic@demo.com / clinic123
+          <br />
+          Doctor: doctor@demo.com / doctor123
         </p>
       </div>
 
