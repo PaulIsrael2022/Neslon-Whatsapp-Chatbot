@@ -11,7 +11,8 @@ import {
   DollarSign,
   Package,
   Building2,
-  Stethoscope
+  Stethoscope,
+  User
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -40,12 +41,45 @@ export default function Sidebar({ isOpen }: { isOpen: boolean }) {
   return (
     <div className={`${isOpen ? 'block' : 'hidden'} md:flex md:flex-shrink-0`}>
       <div className="flex flex-col w-64">
-        <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
-          <div className="flex items-center flex-shrink-0 px-4">
-            <h1 className="text-xl font-bold text-gray-900">MedDelivery</h1>
+        <div className="flex flex-col flex-grow h-screen bg-white border-r border-gray-200">
+          {/* Logo/Branding Section */}
+          <div className="flex items-center justify-center h-16 flex-shrink-0 px-4 bg-gray-50 border-b border-gray-200">
+            <img
+              src="/logo.png"
+              alt="MedDelivery Logo"
+              className="h-8 w-auto"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+            <h1 className="text-xl font-bold text-gray-900 ml-2">MedDelivery</h1>
           </div>
-          <div className="mt-5 flex-grow flex flex-col">
-            <nav className="flex-1 px-2 space-y-1">
+
+          {/* Profile Snippet */}
+          <div className="flex items-center px-4 py-3 border-b border-gray-200">
+            <div className="flex-shrink-0">
+              {user?.photoURL ? (
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={user.photoURL}
+                  alt={user.name || 'User'}
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                  <User className="h-6 w-6 text-gray-500" />
+                </div>
+              )}
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-700">{user?.name || 'User Name'}</p>
+              <p className="text-xs text-gray-500 capitalize">{role || 'Role'}</p>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex-grow overflow-y-auto">
+            <nav className="px-2 py-4 space-y-1">
               {navigation.map((item) => (
                 <NavLink
                   key={item.name}
