@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   Truck, MapPin, Users, Clock, AlertTriangle, 
-  BarChart2, Settings, MessageSquare 
+  BarChart2, Settings, MessageSquare, Package 
 } from 'lucide-react';
 
 interface CoordinatorSidebarProps {
@@ -15,6 +15,11 @@ const navigationItems = [
     name: 'Dashboard',
     to: '/coordinator/dashboard',
     icon: BarChart2
+  },
+  {
+    name: 'Orders Assignment',
+    to: '/coordinator/orders',
+    icon: Package
   },
   {
     name: 'Active Deliveries',
@@ -59,19 +64,19 @@ export default function CoordinatorSidebar({ isOpen, onClose }: CoordinatorSideb
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-20 transition-opacity bg-gray-500 bg-opacity-75 lg:hidden"
+          className="fixed inset-0 z-40 transition-opacity bg-gray-500 bg-opacity-75 lg:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 transition duration-300 transform bg-white border-r border-gray-200 lg:translate-x-0 lg:static lg:inset-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 w-64 transition duration-300 transform bg-white border-r border-gray-200 lg:transform-none lg:relative ${
+          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-center h-16 flex-shrink-0 px-4 bg-indigo-600">
+          <div className="flex items-center justify-center h-16 flex-shrink-0 px-4 bg-indigo-600 lg:hidden">
             <h2 className="text-xl font-semibold text-white">Coordinator Panel</h2>
           </div>
 

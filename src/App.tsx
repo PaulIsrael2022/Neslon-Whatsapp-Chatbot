@@ -27,6 +27,11 @@ import PharmaciesPage from './pages/Pharmacies';
 import CoordinatorDashboard from './pages/Coordinator/Dashboard';
 import StaffManagement from './pages/Coordinator/Staff';
 import ZonesManagement from './pages/Coordinator/Zones';
+import ActiveDeliveries from './pages/Coordinator/ActiveDeliveries';
+import DeliverySchedule from './pages/Coordinator/DeliverySchedule';
+import IssuesManagement from './pages/Coordinator/Issues';
+import Communications from './pages/Coordinator/Communications';
+import OrdersAssignment from './pages/Coordinator/OrdersAssignment';
 import NotFound from './pages/ErrorPages/NotFound';
 import ServerError from './pages/ErrorPages/ServerError';
 import Unauthorized from './pages/ErrorPages/Unauthorized';
@@ -88,11 +93,14 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<CoordinatorDashboard />} />
-            <Route path="deliveries" element={<DeliveriesPage />} />
-            <Route path="staff" element={<StaffManagement />} />
+            <Route path="dashboard" element={<CoordinatorDashboard />} />
+            <Route path="orders" element={<OrdersAssignment />} />
+            <Route path="deliveries/active" element={<ActiveDeliveries />} />
             <Route path="zones" element={<ZonesManagement />} />
-            <Route path="support" element={<SupportPage />} />
+            <Route path="staff" element={<StaffManagement />} />
+            <Route path="schedule" element={<DeliverySchedule />} />
+            <Route path="issues" element={<IssuesManagement />} />
+            <Route path="communications" element={<Communications />} />
             <Route path="settings" element={<UserSettings />} />
           </Route>
 
