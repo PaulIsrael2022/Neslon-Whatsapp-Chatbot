@@ -18,11 +18,18 @@ export default function LoginPage() {
       const response = await login(email, password);
       toast.success('Successfully logged in!');
       
-      // Redirect based on user role
-      if (response.user.role === 'doctor' || response.user.role === 'clinic') {
-        navigate('/doctor');
-      } else {
-        navigate('/');
+      // Role-based redirects
+      switch (response.user.role) {
+        case 'doctor':
+        case 'clinic':
+          navigate('/doctor');
+          break;
+        case 'pharmacyStaff':
+        case 'pharmacyAdmin':
+          navigate('/pharmacy');
+          break;
+        default:
+          navigate('/');
       }
     } catch (err) {
       toast.error('Invalid credentials');

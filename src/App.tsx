@@ -4,11 +4,15 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import DoctorLayout from './layouts/DoctorLayout';
+import PharmacyLayout from './layouts/PharmacyLayout';
+import CoordinatorLayout from './layouts/CoordinatorLayout';
 import LoginPage from './components/Auth/LoginPage';
 import Dashboard from './pages/Dashboard';
 import DoctorDashboard from './pages/Doctor/Dashboard';
 import DoctorAppointments from './pages/Doctor/Appointments';
 import DoctorOrders from './pages/Doctor/Orders';
+import PharmacyDashboard from './pages/Pharmacy/Dashboard';
+import PharmacyOrders from './pages/Pharmacy/Orders';
 import OrdersPage from './pages/Orders';
 import PatientsPage from './pages/Patients';
 import InventoryPage from './pages/Inventory';
@@ -20,6 +24,9 @@ import SettingsPage from './pages/Settings';
 import UserSettings from './pages/UserSettings';
 import ClinicsPage from './pages/Clinics';
 import PharmaciesPage from './pages/Pharmacies';
+import CoordinatorDashboard from './pages/Coordinator/Dashboard';
+import StaffManagement from './pages/Coordinator/Staff';
+import ZonesManagement from './pages/Coordinator/Zones';
 import NotFound from './pages/ErrorPages/NotFound';
 import ServerError from './pages/ErrorPages/ServerError';
 import Unauthorized from './pages/ErrorPages/Unauthorized';
@@ -70,6 +77,40 @@ function App() {
             <Route path="user-settings" element={<UserSettings />} />
             <Route path="clinics" element={<ClinicsPage />} />
             <Route path="pharmacies" element={<PharmaciesPage />} />
+          </Route>
+
+          {/* Delivery Coordinator Routes */}
+          <Route
+            path="/coordinator"
+            element={
+              <ProtectedRoute allowedRoles={['deliveryCoordinator']}>
+                <CoordinatorLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<CoordinatorDashboard />} />
+            <Route path="deliveries" element={<DeliveriesPage />} />
+            <Route path="staff" element={<StaffManagement />} />
+            <Route path="zones" element={<ZonesManagement />} />
+            <Route path="support" element={<SupportPage />} />
+            <Route path="settings" element={<UserSettings />} />
+          </Route>
+
+          {/* Pharmacy Routes */}
+          <Route
+            path="/pharmacy"
+            element={
+              <ProtectedRoute allowedRoles={['pharmacyStaff', 'pharmacyAdmin']}>
+                <PharmacyLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<PharmacyDashboard />} />
+            <Route path="orders" element={<PharmacyOrders />} />
+            <Route path="inventory" element={<InventoryPage />} />
+            <Route path="delivery-status" element={<DeliveriesPage />} />
+            <Route path="support" element={<SupportPage />} />
+            <Route path="settings" element={<UserSettings />} />
           </Route>
 
           <Route path="/unauthorized" element={<Unauthorized />} />

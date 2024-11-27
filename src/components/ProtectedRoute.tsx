@@ -20,8 +20,26 @@ export default function ProtectedRoute({ children, allowedRoles = [] }: Protecte
     return <Navigate to="/doctor" replace />;
   }
 
-  // Redirect other roles to main dashboard if they try to access doctor routes
+  // Redirect pharmacy staff to pharmacy dashboard
+  if ((user.role === 'pharmacyStaff' || user.role === 'pharmacyAdmin') && !location.pathname.startsWith('/pharmacy')) {
+    return <Navigate to="/pharmacy" replace />;
+  }
+
+  // Redirect delivery coordinator to coordinator dashboard
+  if (user.role === 'deliveryCoordinator' && !location.pathname.startsWith('/coordinator')) {
+    return <Navigate to="/coordinator" replace />;
+  }
+
+  // Prevent unauthorized access to role-specific routes
   if (location.pathname.startsWith('/doctor') && !['doctor', 'clinic'].includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+  
+  if (location.pathname.startsWith('/pharmacy') && !['pharmacyStaff', 'pharmacyAdmin'].includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (location.pathname.startsWith('/coordinator') && user.role !== 'deliveryCoordinator') {
     return <Navigate to="/" replace />;
   }
 

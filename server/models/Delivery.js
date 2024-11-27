@@ -49,6 +49,62 @@ const deliverySchema = new mongoose.Schema({
     ],
     required: true
   },
+  priority: {
+    level: { 
+      type: String, 
+      enum: ['Low', 'Medium', 'High', 'Emergency'],
+      default: 'Medium'
+    },
+    reason: String,
+    updatedAt: { type: Date, default: Date.now }
+  },
+  performanceMetrics: {
+    pickupTime: Date,
+    deliveryTime: Date,
+    estimatedDuration: Number, // in minutes
+    actualDuration: Number,    // in minutes
+    distanceCovered: Number,   // in kilometers
+    deliveryAttempts: { type: Number, default: 1 },
+    customerRating: { type: Number, min: 1, max: 5 },
+    issues: [{
+      type: { type: String, enum: ['Delay', 'Wrong Address', 'Customer Unavailable', 'Technical', 'Other'] },
+      description: String,
+      timestamp: { type: Date, default: Date.now }
+    }]
+  },
+  routeData: {
+    sequence: { type: Number, default: 1 }, // Position in delivery route
+    estimatedArrival: Date,
+    actualArrival: Date,
+    optimizationScore: { type: Number, default: 0 }, // 0-100 score based on route efficiency
+    waypoints: [{
+      location: {
+        type: { type: String, default: 'Point' },
+        coordinates: [Number] // [longitude, latitude]
+      },
+      arrivalTime: Date,
+      departureTime: Date,
+      purpose: { type: String, enum: ['Pickup', 'Delivery', 'Break', 'Other'] }
+    }]
+  },
+  coordinatorManagement: {
+    assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    assignedAt: { type: Date, default: Date.now },
+    notes: String,
+    statusUpdates: [{
+      status: String,
+      timestamp: { type: Date, default: Date.now },
+      comment: String,
+      updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    }],
+    qualityChecks: [{
+      type: { type: String, enum: ['Pre-delivery', 'Post-delivery', 'Customer Feedback'] },
+      timestamp: { type: Date, default: Date.now },
+      checkedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      result: { type: String, enum: ['Pass', 'Fail', 'Warning'] },
+      notes: String
+    }]
+  },
   status: {
     type: String,
     enum: [

@@ -52,6 +52,37 @@ const deliveryZoneSchema = new mongoose.Schema({
     maxItems: Number,
     excludedItems: [String]
   },
+  coverageMetrics: {
+    totalDeliveries: { type: Number, default: 0 },
+    successRate: { type: Number, default: 0 },
+    averageDeliveryTime: { type: Number, default: 0 }, // in minutes
+    deliveryDensity: { type: Number, default: 0 } // deliveries per square km
+  },
+  operatingHours: [{
+    day: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] },
+    windows: [{
+      start: String, // HH:mm format
+      end: String,   // HH:mm format
+      maxDeliveries: { type: Number, default: 10 }
+    }]
+  }],
+  feeStructure: {
+    rushHourMultiplier: { type: Number, default: 1.5 },
+    holidayMultiplier: { type: Number, default: 2.0 },
+    weightBasedFees: [{
+      maxWeight: Number,
+      additionalFee: Number
+    }],
+    specialHandlingFee: { type: Number, default: 0 }
+  },
+  assignedStaff: [{
+    officer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    role: { type: String, enum: ['primary', 'backup', 'temporary'] },
+    schedule: [{
+      day: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] },
+      shift: { start: String, end: String }
+    }]
+  }],
   deliverySchedule: {
     monday: {
       available: { type: Boolean, default: true },
