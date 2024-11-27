@@ -15,9 +15,15 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      const response = await login(email, password);
       toast.success('Successfully logged in!');
-      navigate('/');
+      
+      // Redirect based on user role
+      if (response.user.role === 'doctor' || response.user.role === 'clinic') {
+        navigate('/doctor');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       toast.error('Invalid credentials');
     } finally {

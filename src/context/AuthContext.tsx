@@ -5,7 +5,7 @@ import type { User } from '../types';
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ token: string; user: User }>;
   logout: () => void;
   loading: boolean;
 }
@@ -39,10 +39,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const { token, user } = await auth.login(email, password);
+      const response = await auth.login(email, password);
+      const { token, user } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
+      return response;
     } catch (error) {
       throw error;
     }
